@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "260119314483",
+    "project_id": "flicfix",
+    "storage_bucket": "flicfix.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260119314483:android:daeb0974416bce2cf7e346",
+        "android_client_info": {
+          "package_name": "com.flicfix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260119314483-ps5q7sucfpusr904pgr9eggticiib9cu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxyFr0CqD1eUainUbryad_7roNJtVrB4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260119314483-ps5q7sucfpusr904pgr9eggticiib9cu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
