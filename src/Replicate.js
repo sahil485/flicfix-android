@@ -1,8 +1,7 @@
 import Replicate from 'replicate'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-// import { REPLICATE_API_KEY } from '@env'
-const REPLICATE_API_KEY = '2984b2678c0457b07d7b0ab3ac037fdafea66a84'
+import { REPLICATE_API_KEY } from '@env'
 
 const ReplicateBtn = ({ setImgSize, setEditing, setPrompt, prompt, imageURL, URLChain, updateURLChain, URLChainInd, incrementURLChainInd, promptChain, updatePromptChain }) => {
 
