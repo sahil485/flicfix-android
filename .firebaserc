@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "flicfix"
+  },
+  "targets": {},
+  "etags": {
+    "flicfix": {
+      "extensionInstances": {
+        "storage-resize-images": "5976c244b3eaabf4307a015a2ad6ce206d2b19890a37dc5a13c732466ff2efcb"
+      }
+    }
+  }
+}

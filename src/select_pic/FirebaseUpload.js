@@ -9,14 +9,7 @@ import {
 } from 'react-native';
 
 import storage from '@react-native-firebase/storage'
-
-// import { onCustomEventPublished } from 'firebase-functions/v2/eventarc'
-
-// export const eventhandler = onCustomEventPublished(
-//     "firebase.extensions.storage-resize-images.v1.complete",
-//     (e) => {
-//         console.log("new image resized")
-//     });
+import { firebase } from '@react-native-firebase/functions';
 
 const FirebaseUpload = ({ cameraRollURI, setImgSize, updateURLChain, togglePhotoSelection, setFirebaseRef }) => {
 

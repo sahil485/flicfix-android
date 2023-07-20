@@ -23,6 +23,9 @@ import storage from '@react-native-firebase/storage';
 
 export const containerPadding = 20
 
+const [test, setTest] = useState('');
+exports.setTest = setTest
+
 const App = () => {
     const [prompt, setPrompt] = useState('');
     const [isEditing, setEditing] = useState(false)
@@ -224,6 +227,7 @@ const App = () => {
             {!showPhotoSelection ? (
                 <BottomBar disabled={URLChain.length <= 0} ind={URLChainInd} startRecording={startRecording} stopRecording={stopRecording} regenerate={regenerateImg} prev={prevScreen} next={nextScreen} save={saveImg}/>
             ) : (null)}
+            <Text>{test}</Text>
         </View>
     );
 };
