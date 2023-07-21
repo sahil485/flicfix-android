@@ -19,12 +19,10 @@ import SelectImage from './select_pic/SelectImage';
 import FirebaseUpload from './select_pic/FirebaseUpload';
 import BottomBar from './bottom_bar/BottomBar';
 
-import storage from '@react-native-firebase/storage';
+import storage, { firebase } from '@react-native-firebase/storage';
+import messaging from '@react-native-firebase/messaging'
 
 export const containerPadding = 20
-
-const [test, setTest] = useState('');
-exports.setTest = setTest
 
 const App = () => {
     const [prompt, setPrompt] = useState('');
@@ -36,7 +34,6 @@ const App = () => {
     const [URLChainInd, incrementURLChainInd] = useState(0)
     const [showPhotoSelection, togglePhotoSelection] = useState(false)
     const [firebaseRef, setFirebaseRef] = useState("")
-    const [cameraRollPermission, setCameraRollPermission] = useState(false)
 
     const speechStartHandler = e => {
         console.log('speechStart successful', e);
@@ -142,7 +139,20 @@ const App = () => {
         requestPermission(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE)
         requestPermission(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)
         requestPermission(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO)
+        requestPermission(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
+        messaging().subscribeToTopic("image-resize-completion").then(() => console.log("subscribed to topic image-resize-completion"))
+
+        // return () => {messaging().unsubscribeFromTopic("image-resize-completion")}
     }, [])
+
+    // useEffect(() => {
+    //     console.log("listening main")
+    //     messaging().onMessage( (message) => {
+    //         console.log("MESSAGE", message.data)
+    //         setEditedPath(message.data.path)
+    //     })
+    //     // return hello 
+    // }, [cameraRollURI])
 
     return (
         <View style={styles.container}>
@@ -227,7 +237,6 @@ const App = () => {
             {!showPhotoSelection ? (
                 <BottomBar disabled={URLChain.length <= 0} ind={URLChainInd} startRecording={startRecording} stopRecording={stopRecording} regenerate={regenerateImg} prev={prevScreen} next={nextScreen} save={saveImg}/>
             ) : (null)}
-            <Text>{test}</Text>
         </View>
     );
 };

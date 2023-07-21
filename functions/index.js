@@ -10,20 +10,25 @@
 const {onCustomEventPublished} = require("firebase-functions/v2/eventarc");
 // require("firebase-functions/logger/compat");
 // const logger = require("firebase-functions/logger");
-// const {onCall} = require("firebase-functions/v2/https");
+const {onCall} = require("firebase-functions/v2/https");
 const {initializeApp} = require("firebase-admin/app");
+const admin = require('firebase-admin');
 
-initializeApp();
+const app = initializeApp();
 
 exports.onimageresized = onCustomEventPublished(
     "firebase.extensions.storage-resize-images.v1.complete",
-    (event) => {
-      return event.data.outputs[0].outputFilePath;
+        (event) => {
+            const payload = {
+                data: {
+                    path: event.data.outputs[0].outputFilePath
+                },
+                topic: 'image-resize-completion',
+              };
+              
+            return admin.messaging().send(payload)
     });
 
-// exports.test = onCall((data, context) => {
-//   return this.onimageresized();
-// });
 
 // logger.info(event);
 // logger.log(event.data.outputs[0].outputFilePath)

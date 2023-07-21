@@ -16,6 +16,7 @@
     "@react-native-community/voice": "^1.1.9",
     "@react-native-firebase/app": "^17.4.2",
     "@react-native-firebase/functions": "^18.3.0",
+    "@react-native-firebase/messaging": "^18.3.0",
     "@react-native-firebase/storage": "^17.4.2",
     "@react-native/metro-config": "^0.72.9",
     "@react-navigation/bottom-tabs": "^6.5.7",
