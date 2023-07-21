@@ -145,15 +145,6 @@ const App = () => {
         // return () => {messaging().unsubscribeFromTopic("image-resize-completion")}
     }, [])
 
-    // useEffect(() => {
-    //     console.log("listening main")
-    //     messaging().onMessage( (message) => {
-    //         console.log("MESSAGE", message.data)
-    //         setEditedPath(message.data.path)
-    //     })
-    //     // return hello 
-    // }, [cameraRollURI])
-
     return (
         <View style={styles.container}>
             <View style={{ alignItems : 'center'}}>
