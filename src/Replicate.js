@@ -28,14 +28,11 @@ export const callReplicate = async ( setImgSize, setEditing, setPrompt, prompt, 
     })
 
     setEditing(true)
-    console.log("Starting...")
-    console.log("prompt", prompt)
     try
     {
         const model = "timothybrooks/instruct-pix2pix:30c1d0b916a6f8efce20493f5d61ee27491ab2a60437c13c588468b9810ec23f"
         const input = { image : imageURL, prompt : prompt }
         const output = await replicate.run(model, { input })
-        console.log(output)
         
         //if the current one being edited is not the latest in the chain, add this as the next in the chain and erase the rest
         
@@ -57,14 +54,12 @@ export const callReplicate = async ( setImgSize, setEditing, setPrompt, prompt, 
         incrementURLChainInd(URLChainInd+1)
         setPrompt("")
         Image.getSize(output[0], (width, height) => {
-            console.log("edited" , width)
-            console.log('edited', height)
             setImgSize({width: width, height: height})
         })
     }
     catch(e)
     {
-        console.log("Editing unsuccessful", e)
+        console.log("Editing unsuccessful", e) //perhaps make this a "try again notification?"
         setEditing(false)
     }
 }

@@ -12,7 +12,6 @@ const SelectImage = ({ setCameraRollURI}) => {
             <View style={{ height: '86%' }}>
                 <CameraRollPicker callback={(selected) => {
                     try {
-                        console.log(selected[0].uri)
                         setCameraRollURI(selected[0].uri)
                     }
                     catch (e) {

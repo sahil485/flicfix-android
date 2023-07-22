@@ -4,16 +4,18 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image,
+    Image
 } from 'react-native';
 
-const BottomBar = ({ disabled, startRecording, stopRecording, regenerate, prev, next, save }) => {
+//alerts when you do things in bottom bar that aren't allowed 
+
+const BottomBar = ({ startRecording, stopRecording, regenerate, prev, next, save }) => {
 
     return (
         <>
             <View style={styles.container}>
                 <View style={styles.button}>
-                    <TouchableOpacity disabled={disabled} style={{ alignItems: 'center', justifyContent: 'center' }} onPress={prev} >
+                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }} onPress={prev} >
                         <Image 
                             source={require('../../assets/back.png')}
                             resizeMode='contain'
@@ -29,7 +31,7 @@ const BottomBar = ({ disabled, startRecording, stopRecording, regenerate, prev, 
                 </View>
 
                 <View style={styles.button}>
-                    <TouchableOpacity disabled={disabled} style={{ alignItems: 'center', justifyContent: 'center' }} onPress={regenerate} >
+                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }} onPress={regenerate} >
                         <Image 
                             source={require('../../assets/regen.png')}
                             resizeMode='contain'
@@ -45,7 +47,7 @@ const BottomBar = ({ disabled, startRecording, stopRecording, regenerate, prev, 
                 </View>    
 
                 <View style={styles.middleIcon}>
-                    <TouchableOpacity disabled={disabled} style={{ alignItems: 'center', justifyContent: 'center', width: 60, height: 60, borderRadius: 30, backgroundColor : '#a5d1f3'}}
+                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', width: 60, height: 60, borderRadius: 30, backgroundColor : '#a5d1f3'}}
                         onLongPress={startRecording}
                         delayLongPress={150}
                         onPressOut={stopRecording}
@@ -61,7 +63,7 @@ const BottomBar = ({ disabled, startRecording, stopRecording, regenerate, prev, 
                 </View>    
 
                 <View style={styles.button}>
-                    <TouchableOpacity disabled={disabled} style={{ alignItems: 'center', justifyContent: 'center' }} onPress={save}>
+                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }} onPress={save}>
                         <Image 
                             source={require('../../assets/save.png')}
                             resizeMode='contain'
@@ -77,7 +79,7 @@ const BottomBar = ({ disabled, startRecording, stopRecording, regenerate, prev, 
                 </View>    
 
                 <View style={styles.button}>
-                    <TouchableOpacity disabled={disabled} style={{ alignItems: 'center', justifyContent: 'center' }} onPress={next}>
+                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }} onPress={next}>
                         <Image 
                             source={require('../../assets/forward.png')}
                             resizeMode='contain'

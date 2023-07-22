@@ -21,21 +21,19 @@ const FirebaseUpload = ({ cameraRollURI, setImgSize, updateURLChain, togglePhoto
 
     const uploadImg = async () => {
         setUploading(true)
-        console.log(imgName)
 
         const pathToFile = cameraRollURI
-        // uploads file
-
-        const { state } = await reference.putFile(pathToFile)
+        await reference.putFile(pathToFile) //upload file to firebase
     }
 
+    //listener for Eventarc channel 
     useEffect(() => {
-        const hello = messaging().onMessage( (message) => {
+        messaging().onMessage( (message) => {
             setEditedPath(message.data.path)
         })
-        return hello 
     }, [cameraRollURI])
 
+    //after resize is complete, process the edited image
     useEffect(() => {
         if(editedPath != "")
         {
@@ -51,7 +49,7 @@ const FirebaseUpload = ({ cameraRollURI, setImgSize, updateURLChain, togglePhoto
                 updateURLChain([url])
                 togglePhotoSelection(false)
             })
-            .catch(e => console.log(e))
+            .catch(e => console.log(e)) //make this an error notification if needed
         }
     }, [editedPath])
 
@@ -59,7 +57,10 @@ const FirebaseUpload = ({ cameraRollURI, setImgSize, updateURLChain, togglePhoto
     return (
         <View style={styles.container}>
             {uploading ? (
-                <ActivityIndicator size="large" color="black" />
+                <View style={styles.processing}>
+                    <ActivityIndicator size="large" color="black" />
+                    <Text style={{color: 'black', fontSize: 15}}>Processing...</Text>
+                </View>
             ) : (
                 <TouchableOpacity style={styles.select} onPress={uploadImg}>
                     <Text style={{color: 'black', fontSize: 15}}>Select</Text>
@@ -75,6 +76,13 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         overflow: 'scroll',
     },
+    processing:
+    {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     select: 
     {
         backgroundColor: '#a5d1f3',
@@ -84,8 +92,7 @@ const styles = StyleSheet.create({
         padding: 8,
         borderRadius: 8,
         width: 80,
-        marginTop: 10,
-        // marginBottom: 10
+        marginTop: 10
     }
 });
 

@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     PermissionsAndroid,
+    Alert
 } from 'react-native';
 
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
@@ -19,7 +20,7 @@ import SelectImage from './select_pic/SelectImage';
 import FirebaseUpload from './select_pic/FirebaseUpload';
 import BottomBar from './bottom_bar/BottomBar';
 
-import storage, { firebase } from '@react-native-firebase/storage';
+import storage from '@react-native-firebase/storage';
 import messaging from '@react-native-firebase/messaging'
 
 export const containerPadding = 20
@@ -75,26 +76,41 @@ const App = () => {
         const regen_base_URL = URLChain[URLChainInd - 1]
         const regen_ind = URLChainInd - 1
         await callReplicate( setImgSize, setEditing, setPrompt, regen_prompt, regen_base_URL, URLChain, updateURLChain, regen_ind, incrementURLChainInd, incrementURLChainInd, promptChain, true )
-
     }
 
     const prevScreen = () => {
         if(URLChainInd > 0) incrementURLChainInd(URLChainInd - 1)
         else if(URLChainInd == 0)
         {
-            updateURLChain([])
-            try
-            {
-                storage().ref(firebaseRef).delete()
-                setFirebaseRef("")
-                console.log("deleted from firebase")
-            }
-            catch(e)
-            {
-                console.log(e)
-            }
+            Alert.alert(
+                "Return to Photo Selection?",
+                "All unsaved photo edits will be deleted",
+                [
+                    {
+                        text: 'Ok',
+                        onPress: () => 
+                        {
+                            updateURLChain([])
+                            try
+                            {
+                                storage().ref(firebaseRef).delete()
+                                setFirebaseRef("")
+                                console.log("deleted from firebase")
+                            }
+                            catch(e)
+                            {
+                                console.log(e)
+                            }
+                        },
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'Cancel',
+                        style: 'cancel'
+                    }
+                  ],
+            )
         }
-        else console.log("cant")
     }
 
     const nextScreen = () => {
@@ -103,17 +119,36 @@ const App = () => {
     }
 
     const saveImg = () => {
-        if(URLChainInd == 0) return
-        console.log("saving to camera roll")
-        RNFetchBlob.config({
-            fileCache: true,
-            appendExt: 'jpg',
-          })
-            .fetch('GET', URLChain[URLChainInd])
-            .then(res => {
-                console.log(res.data)
-                CameraRoll.save(res.data, 'photo')
-            })
+        function save() {
+            RNFetchBlob.config({
+                fileCache: true,
+                appendExt: 'jpg',
+              })
+                .fetch('GET', URLChain[URLChainInd])
+                .then(res => {
+                    CameraRoll.save(res.data, 'photo')
+                })
+        }
+
+        if(URLChainInd == 0)
+        {
+            Alert.alert(
+                "Save as duplicate?",
+                "This image is already in your Camera Roll",
+                [
+                    {
+                        text: "Save",
+                        onPress: () => save(),
+                        style: 'cancel'
+                    },
+                    {
+                        text: "Cancel",
+                        style: 'cancel'
+                    }
+                ]
+            )
+        }
+        else save()
     }
 
     const requestPermission = async (permission) => {
@@ -141,12 +176,10 @@ const App = () => {
         requestPermission(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO)
         requestPermission(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
         messaging().subscribeToTopic("image-resize-completion").then(() => console.log("subscribed to topic image-resize-completion"))
-
-        // return () => {messaging().unsubscribeFromTopic("image-resize-completion")}
     }, [])
 
     return (
-        <View style={styles.container}>
+        <View style={{...styles.container, justifyContent: (!showPhotoSelection && !(URLChain.length <= 0)) ? 'flex-start' : 'center'}}>
             <View style={{ alignItems : 'center'}}>
                 {URLChain.length > 0 ? (
                     <ImageCont edited = {URLChain.length > 1} imgSize = {imgSize} 
@@ -174,19 +207,15 @@ const App = () => {
                         :
                         (
                             <TouchableOpacity style={styles.placeholder} 
-                                onPress={() => 
-                                {
-                                    // requestCameraRollPermission()
-                                    togglePhotoSelection(true)
-                                }
-                                }>
+                                onPress={() => {togglePhotoSelection(true)}
+                            }>
                                 <ImageCont needToPick={true} />
-                                <Text style={{ color: 'black', fontSize: 17, paddingBottom: 5 }}>Click to Upload Photo</Text>
+                                <Text style={{ color: 'black', fontSize: 17, paddingBottom: 5 }}>Click to Select Photo</Text>
                             </TouchableOpacity>
                         )}
                     </>
                 )}
-                {!showPhotoSelection ? (
+                {!showPhotoSelection && !(URLChain.length <= 0)  ? (
                     <View style={styles.textInputCont}>
                         <View style={styles.textInputBox} disabled={URLChain.length <= 0}>
                             <TextInput
@@ -225,8 +254,8 @@ const App = () => {
                     </View>
                 ) : (null)}
                 </View>
-            {!showPhotoSelection ? (
-                <BottomBar disabled={URLChain.length <= 0} ind={URLChainInd} startRecording={startRecording} stopRecording={stopRecording} regenerate={regenerateImg} prev={prevScreen} next={nextScreen} save={saveImg}/>
+            {!showPhotoSelection && !(URLChain.length <= 0) ? (
+                <BottomBar ind={URLChainInd} startRecording={startRecording} stopRecording={stopRecording} regenerate={regenerateImg} prev={prevScreen} next={nextScreen} save={saveImg}/>
             ) : (null)}
         </View>
     );
@@ -237,7 +266,10 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         backgroundColor: '#fff',
-        padding: containerPadding
+        padding: containerPadding,
+        display: 'flex',
+        flexDirection: 'column',
+        // justifyContent: 'center'
     },
     imgContainer: 
     {
