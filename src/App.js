@@ -78,9 +78,9 @@ const App = () => {
         await callReplicate( setImgSize, setEditing, setPrompt, regen_prompt, regen_base_URL, URLChain, updateURLChain, regen_ind, incrementURLChainInd, incrementURLChainInd, promptChain, true )
     }
 
-    const prevScreen = () => {
-        if(URLChainInd > 0) incrementURLChainInd(URLChainInd - 1)
-        else if(URLChainInd == 0)
+    // const prevScreen = (exit = false) => {
+    function prevScreen(exit = false){
+        if(URLChainInd == 0 || exit)
         {
             Alert.alert(
                 "Return to Photo Selection?",
@@ -96,6 +96,7 @@ const App = () => {
                                 storage().ref(firebaseRef).delete()
                                 setFirebaseRef("")
                                 console.log("deleted from firebase")
+                                incrementURLChainInd(0)
                             }
                             catch(e)
                             {
@@ -111,6 +112,7 @@ const App = () => {
                   ],
             )
         }
+        else if(URLChainInd > 0) incrementURLChainInd(URLChainInd - 1)
     }
 
     const nextScreen = () => {
@@ -181,19 +183,27 @@ const App = () => {
     return (
         <View style={{...styles.container, justifyContent: (!showPhotoSelection && !(URLChain.length <= 0)) ? 'flex-start' : 'center'}}>
             <View style={{ alignItems : 'center'}}>
+                {(showPhotoSelection || URLChainInd > 0) ? (
+                    <View style={{ display: 'flex', width: '100%', alignItems: 'flex-end', height: '4%'}}>
+                        <TouchableOpacity style={{ backgroundColor: '#9e9e9e', alignItems: 'center', borderWidth: 2, borderColor: '#9e9e9e', borderRadius: 15, marginRight: 0}} 
+                            onPress={() => {
+                                if(URLChain.length > 0) prevScreen(true)
+                                else togglePhotoSelection(false)
+                            }}>
+                            <Text style={{paddingVertical: 0, paddingHorizontal: 5, color: 'white', fontWeight: 'bold', fontSize: 13}}>X</Text>
+                        </TouchableOpacity>
+                    </View>
+                ) : (null)}
                 {URLChain.length > 0 ? (
-                    <ImageCont edited = {URLChain.length > 1} imgSize = {imgSize} 
-                        imgLink = {URLChain[URLChainInd]} incrementURLChainInd={incrementURLChainInd}
-                    />
+                    <>
+                        <ImageCont edited = {URLChain.length > 1} imgSize = {imgSize} 
+                            imgLink = {URLChain[URLChainInd]} incrementURLChainInd={incrementURLChainInd}
+                        />
+                    </>
                 ) : (
                     <>
                         {showPhotoSelection ? (
                             <>
-                                <View style={{ display: 'flex', width: '100%', alignItems: 'flex-end', height: '4%'}}>
-                                    <TouchableOpacity style={{ backgroundColor: '#9e9e9e', alignItems: 'center', borderWidth: 2, borderColor: '#9e9e9e', borderRadius: 15, marginRight: 0}} onPress={() => togglePhotoSelection(false)}>
-                                        <Text style={{paddingVertical: 0, paddingHorizontal: 5, color: 'white', fontWeight: 'bold', fontSize: 13}}>X</Text>
-                                    </TouchableOpacity>
-                                </View>
                                 <Text style = {{ color: 'black', alignSelf: 'center'}}>Select Image From Camera Roll: </Text>
                                 <SelectImage setCameraRollURI = {setCameraRollURI}/>
                                 <FirebaseUpload cameraRollURI = {cameraRollURI}
