@@ -83,7 +83,7 @@ const App = () => {
         if(URLChainInd == 0 || exit)
         {
             Alert.alert(
-                "Return to Photo Selection?",
+                "Return to Home Screen?",
                 "All unsaved photo edits will be deleted",
                 [
                     {
