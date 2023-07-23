@@ -78,8 +78,7 @@ const App = () => {
         await callReplicate( setImgSize, setEditing, setPrompt, regen_prompt, regen_base_URL, URLChain, updateURLChain, regen_ind, incrementURLChainInd, incrementURLChainInd, promptChain, true )
     }
 
-    // const prevScreen = (exit = false) => {
-    function prevScreen(exit = false){
+    function prevScreen(exit = false) {
         if(URLChainInd == 0 || exit)
         {
             Alert.alert(
@@ -183,14 +182,14 @@ const App = () => {
     return (
         <View style={{...styles.container, justifyContent: (!showPhotoSelection && !(URLChain.length <= 0)) ? 'flex-start' : 'center'}}>
             <View style={{ alignItems : 'center'}}>
-                {(showPhotoSelection || URLChainInd > 0) ? (
-                    <View style={{ display: 'flex', width: '100%', alignItems: 'flex-end', height: '4%'}}>
+                {(showPhotoSelection || URLChain.length > 1) ? (
+                    <View style={{ display: 'flex', width: '100%', alignItems: 'flex-end', height: 30, borderWidth: 2, borderStyle: 'solid'}}>
                         <TouchableOpacity style={{ backgroundColor: '#9e9e9e', alignItems: 'center', borderWidth: 2, borderColor: '#9e9e9e', borderRadius: 15, marginRight: 0}} 
                             onPress={() => {
                                 if(URLChain.length > 0) prevScreen(true)
                                 else togglePhotoSelection(false)
                             }}>
-                            <Text style={{paddingVertical: 0, paddingHorizontal: 5, color: 'white', fontWeight: 'bold', fontSize: 13}}>X</Text>
+                            <Text style={{paddingVertical: 0, paddingHorizontal: 5, color: 'white', fontWeight: 'bold', fontSize: 15}}>X</Text>
                         </TouchableOpacity>
                     </View>
                 ) : (null)}
@@ -263,7 +262,7 @@ const App = () => {
                         </View>
                     </View>
                 ) : (null)}
-                </View>
+            </View>
             {!showPhotoSelection && !(URLChain.length <= 0) ? (
                 <BottomBar ind={URLChainInd} startRecording={startRecording} stopRecording={stopRecording} regenerate={regenerateImg} prev={prevScreen} next={nextScreen} save={saveImg}/>
             ) : (null)}
@@ -278,8 +277,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: containerPadding,
         display: 'flex',
-        flexDirection: 'column',
-        // justifyContent: 'center'
+        flexDirection: 'column'
     },
     imgContainer: 
     {

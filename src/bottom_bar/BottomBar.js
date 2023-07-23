@@ -15,7 +15,7 @@ const BottomBar = ({ startRecording, stopRecording, regenerate, prev, next, save
         <>
             <View style={styles.container}>
                 <View style={styles.button}>
-                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }} onPress={prev} >
+                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }} onPress={() => {prev(false)}} >
                         <Image 
                             source={require('../../assets/back.png')}
                             resizeMode='contain'
