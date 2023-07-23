@@ -183,7 +183,7 @@ const App = () => {
         <View style={{...styles.container, justifyContent: (!showPhotoSelection && !(URLChain.length <= 0)) ? 'flex-start' : 'center'}}>
             <View style={{ alignItems : 'center'}}>
                 {(showPhotoSelection || URLChain.length > 1) ? (
-                    <View style={{ display: 'flex', width: '100%', alignItems: 'flex-end', height: 30, borderWidth: 2, borderStyle: 'solid'}}>
+                    <View style={{ display: 'flex', width: '100%', alignItems: 'flex-end', height: 30}}>
                         <TouchableOpacity style={{ backgroundColor: '#9e9e9e', alignItems: 'center', borderWidth: 2, borderColor: '#9e9e9e', borderRadius: 15, marginRight: 0}} 
                             onPress={() => {
                                 if(URLChain.length > 0) prevScreen(true)
@@ -328,7 +328,6 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         width: '85%',
-        // height: '50%',
         display: 'flex', 
         flexDirection: 'column',
         borderWidth: 3,
