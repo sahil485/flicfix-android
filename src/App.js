@@ -19,6 +19,7 @@ import ImageCont from './ImageCont'
 import SelectImage from './select_pic/SelectImage';
 import FirebaseUpload from './select_pic/FirebaseUpload';
 import BottomBar from './bottom_bar/BottomBar';
+import RulesModal from './rules/Rules'
 
 import storage from '@react-native-firebase/storage';
 import messaging from '@react-native-firebase/messaging'
@@ -35,6 +36,7 @@ const App = () => {
     const [URLChainInd, incrementURLChainInd] = useState(0)
     const [showPhotoSelection, togglePhotoSelection] = useState(false)
     const [firebaseRef, setFirebaseRef] = useState("")
+    const [help, toggleHelp] = useState(false)
 
     const speechStartHandler = e => {
         console.log('speechStart successful', e);
@@ -180,7 +182,19 @@ const App = () => {
     }, [])
 
     return (
+    <>
+
+        {!showPhotoSelection && URLChain.length < 2 ? (
+            <View style={{ backgroundColor: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <TouchableOpacity style={{ width: '15%', display: 'flex', flexDirection: 'row', justifyContent: 'center', marginVertical: 5 }} onPress={() => toggleHelp(true)}>
+            <View style= {{ borderColor: 'black', borderWidth: 1 }}>
+            <Text style={{ color: 'black', paddingVertical: 5, paddingHorizontal: 10 }}>Help</Text>
+            </View>
+            </TouchableOpacity>
+            </View>
+            ) : (null)}
         <View style={{...styles.container, justifyContent: (!showPhotoSelection && !(URLChain.length <= 0)) ? 'flex-start' : 'center'}}>
+            <RulesModal visible={help} setVisible={toggleHelp} requestPermission={requestPermission}/>
             <View style={{ alignItems : 'center'}}>
                 {(showPhotoSelection || URLChain.length > 1) ? (
                     <View style={{ display: 'flex', width: '100%', alignItems: 'flex-end', height: 30}}>
@@ -197,7 +211,7 @@ const App = () => {
                     <>
                         <ImageCont edited = {URLChain.length > 1} imgSize = {imgSize} 
                             imgLink = {URLChain[URLChainInd]} incrementURLChainInd={incrementURLChainInd}
-                        />
+                            />
                     </>
                 ) : (
                     <>
@@ -216,8 +230,8 @@ const App = () => {
                         :
                         (
                             <TouchableOpacity style={styles.placeholder} 
-                                onPress={() => {togglePhotoSelection(true)}
-                            }>
+                            onPress={() => {togglePhotoSelection(true)}
+                        }>
                                 <ImageCont needToPick={true} />
                                 <Text style={{ color: 'black', fontSize: 17, paddingBottom: 5 }}>Click to Select Photo</Text>
                             </TouchableOpacity>
@@ -233,10 +247,10 @@ const App = () => {
                                 placeholder= {URLChain.length > 0 ? "Prompt:" : ""}
                                 onChangeText={text => setPrompt(text)}
                                 style = {{ width: '90%', overflow: 'scroll' }}
-                            />
+                                />
                             {prompt ? (
                                 <TouchableOpacity disabled={URLChain.length <= 0} onPress={() => setPrompt("")} 
-                                    style={styles.clearPrompt}>
+                                style={styles.clearPrompt}>
                                     <Text style={{ fontSize:20, color: 'white' }}>X</Text>
                                 </TouchableOpacity>
                                     ) : ( null )}
@@ -245,7 +259,7 @@ const App = () => {
                             {isEditing ? (
                                 <ActivityIndicator size="large" color="black" />
                                 ) : (
-                                <ReplicateBtn
+                                    <ReplicateBtn
                                     setImgSize = {setImgSize} 
                                     setEditing = {setEditing} 
                                     setPrompt = {setPrompt} 
@@ -257,16 +271,17 @@ const App = () => {
                                     incrementURLChainInd = {incrementURLChainInd}
                                     promptChain = {promptChain}
                                     updatePromptChain = {updatePromptChain}
-                                />
-                            )}
+                                    />
+                                    )}
                         </View>
                     </View>
                 ) : (null)}
             </View>
             {!showPhotoSelection && !(URLChain.length <= 0) ? (
                 <BottomBar ind={URLChainInd} startRecording={startRecording} stopRecording={stopRecording} regenerate={regenerateImg} prev={prevScreen} next={nextScreen} save={saveImg}/>
-            ) : (null)}
+                ) : (null)}
         </View>
+    </>
     );
 };
 
