@@ -26,7 +26,7 @@ const RulesModal = ({ visible, setVisible, requestPermission }) => {
                 </View>
                 <View style={{ marginTop: 30, marginHorizontal: 10 }}>
                     <Text style={{ fontSize: 20 }}>If you were unable to enable the permissions we prompted for when you first opened the app, click here:</Text>
-                    <TouchableOpacity style={{ borderColor: 'white', borderWidth: 1, alignSelf: 'center', marginTop: 7 }}onPress={() => {
+                    <TouchableOpacity style={{ borderColor: 'white', borderWidth: 1, alignSelf: 'center', marginTop: 7 }} onPress={() => {
                         requestPermission(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE)
                         requestPermission(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)}}>
                             <Text style = {{ padding: 5}}>Enable Permissions</Text>
